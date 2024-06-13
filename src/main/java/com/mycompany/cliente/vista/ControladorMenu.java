@@ -34,20 +34,38 @@ public class ControladorMenu {
             vista.setErrMessage("Longitud password muy pequeña");
         } else {
             try {
-                vista.setErrMessage("Creando cuenta en el servidor...");
-                java.net.Socket miSocket = new java.net.Socket("localhost", PUERTO);
-                java.io.PrintStream outred = new java.io.PrintStream(miSocket.getOutputStream());
-                outred.println(modelo.toString()); // envia al servidor
-                outred.flush();
-                java.io.BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
-                String linea = inred.readLine();
-                String[] aux = linea.split(";");
-                System.out.println(aux[2]);
-                if (Integer.parseInt(aux[2]) == 1) {
-                    vista.setErrMessage("EL USUARIO YA EXISTE");
+                if (Cliente.getSocket() == null) {
+                    vista.setErrMessage("Creando cuenta en el servidor...");
+                    java.net.Socket miSocket = new java.net.Socket("localhost", PUERTO);
+                    java.io.PrintStream outred = new java.io.PrintStream(miSocket.getOutputStream());
+                    outred.println("L"+ modelo.toString()); // envia al servidor
+                    outred.flush();
+                    java.io.BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+                    String linea = inred.readLine();
+                    String[] aux = linea.split(";");
+                    System.out.println(aux[2]);
+                    if (Integer.parseInt(aux[2]) == 1) {
+                        vista.setErrMessage("EL USUARIO YA EXISTE");
+                    } else {
+                        Cliente.setSocket(miSocket);
+                        Cliente.getGestorVistas().mostrarVistaUsuarios();
+                    }
                 } else {
-                    Cliente.setSocket(miSocket);
-                    Cliente.getGestorVistas().mostrarVistaUsuarios();
+                    vista.setErrMessage("Creando cuenta en el servidor...");
+                    java.net.Socket miSocket = Cliente.getSocket();
+                    java.io.PrintStream outred = new java.io.PrintStream(miSocket.getOutputStream());
+                    outred.println("L" + modelo.toString()); // envia al servidor
+                    outred.flush();
+                    java.io.BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+                    String linea = inred.readLine();
+                    String[] aux = linea.split(";");
+                    System.out.println(aux[2]);
+                    if (Integer.parseInt(aux[2]) == 1) {
+                        vista.setErrMessage("EL USUARIO YA EXISTE");
+                    } else {
+                        Cliente.setSocket(miSocket);
+                        Cliente.getGestorVistas().mostrarVistaUsuarios();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -66,22 +84,42 @@ public class ControladorMenu {
         } else {
             try {
                 vista.setErrMessage("Contactando con el servidor...");
-                java.net.Socket miSocket = new java.net.Socket("localhost", PUERTO);
-                java.io.PrintStream outred = new java.io.PrintStream(miSocket.getOutputStream());
-                outred.println(modelo.toString()); // envia al servidor
-                outred.flush();
-                java.io.BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
-                String linea = inred.readLine();
-                String[] aux = linea.split(";");
-                System.out.println(aux[2]);
-                if (Integer.parseInt(aux[2]) == 1) {
-                    vista.setErrMessage("EL USUARIO NO EXISTE");
-                } else if (Integer.parseInt(aux[2]) == 2) {
-                    vista.setErrMessage("CONTRASEÑA ERRONEA");
+                if (Cliente.getSocket() == null) {
+                    java.net.Socket miSocket = new java.net.Socket("localhost", PUERTO);
+                    java.io.PrintStream outred = new java.io.PrintStream(miSocket.getOutputStream());
+                    outred.println("L"+ modelo.toString()); // envia al servidor
+                    outred.flush();
+                    java.io.BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+                    String linea = inred.readLine();
+                    String[] aux = linea.split(";");
+                    System.out.println(aux[2]);
+                    if (Integer.parseInt(aux[2]) == 1) {
+                        vista.setErrMessage("EL USUARIO NO EXISTE");
+                    } else if (Integer.parseInt(aux[2]) == 2) {
+                        vista.setErrMessage("CONTRASEÑA ERRONEA");
+                    } else {
+                        Cliente.setSocket(miSocket);
+                        System.out.println(miSocket.toString());
+                        Cliente.getGestorVistas().mostrarVistaUsuarios();
+                    }
                 } else {
-                    Cliente.setSocket(miSocket);
-                    System.out.println(miSocket.toString());
-                    Cliente.getGestorVistas().mostrarVistaUsuarios();
+                    java.net.Socket miSocket = Cliente.getSocket();
+                    java.io.PrintStream outred = new java.io.PrintStream(miSocket.getOutputStream());
+                    outred.println("L" + modelo.toString()); // envia al servidor
+                    outred.flush();
+                    java.io.BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+                    String linea = inred.readLine();
+                    String[] aux = linea.split(";");
+                    System.out.println(aux[2]);
+                    if (Integer.parseInt(aux[2]) == 1) {
+                        vista.setErrMessage("EL USUARIO NO EXISTE");
+                    } else if (Integer.parseInt(aux[2]) == 2) {
+                        vista.setErrMessage("CONTRASEÑA ERRONEA");
+                    } else {
+                        Cliente.setSocket(miSocket);
+                        System.out.println(miSocket.toString());
+                        Cliente.getGestorVistas().mostrarVistaUsuarios();
+                    }
                 }
 
             } catch (Exception e) {
