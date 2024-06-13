@@ -20,7 +20,6 @@ public class Grupo9 {
         int opcion;
         ControladorServidor srv = new ControladorServidor();
         do {
-            mostrarMenu();
             System.out.print("Selecciona una opción: ");
             opcion = scanner.nextInt();
             switch (opcion) {
@@ -46,12 +45,4 @@ public class Grupo9 {
 
         scanner.close();
     }
-    public static void mostrarMenu() {
-        System.out.println("=== Menú de Opciones ===");
-        System.out.println("1. Obtener listado de usuarios registrados del servidor");
-        System.out.println("2. Obtener listado de usuarios en linea");
-        System.out.println("3. Obtener listado de las partidas del servidor");
-        System.out.println("4. Obtener Informacion de una partida concreta");
-        System.out.println("0. Salir");
-    }  
 }

@@ -54,7 +54,7 @@ public class ManejadorCliente
         p = dec.decodificar(linea);
         if (p.getComprobado() == -1) {
             System.out.println("CREANDO USR");
-            if (ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()) != 1) {
+            if (ControladorServidor.compruebaCrear(p.getUsuario(), p.getPassword()) != 1) {
                 p.setComprobado(1);
                 System.out.println("USR ya existente");
 
@@ -63,12 +63,15 @@ public class ManejadorCliente
                 p.setComprobado(3);
                 System.out.println("Creacion Correcta");
                 setName(p.getUsuario());
+                ControladorServidor.addManejador(this);
+                
 
             }
         } else {
             p.setComprobado(ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()));
             System.out.println("Comprobacion de usuario y contraseña");
             setName(p.getUsuario());
+            ControladorServidor.addManejador(this);
 
         }
         return p;

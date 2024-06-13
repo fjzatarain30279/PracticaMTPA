@@ -76,6 +76,7 @@ public class ControladorMenu {
     public void procesaEventoIniciarSesion() {
         modelo.setUsuario(vista.getUsr());
         modelo.setPassword(vista.getPswd());
+        modelo.setComprobado(0);
 
         if (modelo.getUsuario().length() < 1) {
             vista.setErrMessage("Longitud muy pequeña");

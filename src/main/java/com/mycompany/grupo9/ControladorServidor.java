@@ -38,11 +38,11 @@ public class ControladorServidor
         setRanking(LectorFicheros.lecturaPuntuaciones("Puntuaciones.txt"));
         try {
             while (isActive()) {
+                mostrarMenu();
                 System.out.println("Esperando clientes....");
                 Socket sck = servidor.accept();
-                System.out.println("Un cliente conectado...");                    
+                System.out.println("\nUn cliente conectado...");
                 ManejadorCliente manejador = new ManejadorCliente(sck);
-                listaManejadores.add(manejador);
             }
         } catch (java.net.SocketException se) {
             // Si se lanza una SocketException, significa que el servidor se cerró
@@ -66,13 +66,20 @@ public class ControladorServidor
         listaUsuarios.put(usr, pwd);
     }
 
-    public static int compruebaLogin(String usr, String pwd) {
+    public static int compruebaCrear(String usr, String pwd) {
         if (listaUsuarios.containsKey(usr) == false) {
             return 1;
         } else if (listaUsuarios.get(usr).equals(pwd) == false) {
             return 2;
         } else {
             return 3;
+        }
+    }
+    public static int compruebaLogin(String usr, String pwd) {
+        if (listaUsuarios.containsKey(usr) && listaUsuarios.get(usr).equals(pwd)) {
+            return 3;
+        }else {
+            return 1;
         }
     }
 
@@ -91,10 +98,10 @@ public class ControladorServidor
     public HashMap<String, String> getListaUsuarios() {
         return listaUsuarios;
     }
-    
-    public String getConectados(){
-        ArrayList<String> conectados=new ArrayList<String>();
-        for(ManejadorCliente m : listaManejadores){
+
+    public String getConectados() {
+        ArrayList<String> conectados = new ArrayList<String>();
+        for (ManejadorCliente m : listaManejadores) {
             conectados.add(m.getName());
         }
         return conectados.toString();
@@ -139,6 +146,19 @@ public class ControladorServidor
 
     public Thread getT() {
         return t;
+    }
+
+    public static void mostrarMenu() {
+        System.out.println("=== Menú de Opciones ===");
+        System.out.println("1. Obtener listado de usuarios registrados del servidor");
+        System.out.println("2. Obtener listado de usuarios en linea");
+        System.out.println("3. Obtener listado de las partidas del servidor");
+        System.out.println("4. Obtener Informacion de una partida concreta");
+        System.out.println("0. Salir");
+    }
+
+    public static void addManejador(ManejadorCliente c) {
+        listaManejadores.add(c);
     }
 
 }
