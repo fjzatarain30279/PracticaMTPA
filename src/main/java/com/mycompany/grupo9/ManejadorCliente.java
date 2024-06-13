@@ -31,40 +31,38 @@ public class ManejadorCliente
             PaqueteLogin p;
             boolean correcto = false;
             while (((linea = inred.readLine()) != null) && (correcto == false)) {
-                p = dec.decodificar(linea);
-                if (p.getComprobado() == -1) {
-                    System.out.println("CREANDO USR");
-                    if (ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()) != 1) {
-                        p.setComprobado(1);
-                        outred.println(p.toString());
-                        System.out.println("USR ya existente");
-
-                    } else {
-                        ControladorServidor.creaUsr(p.getUsuario(), p.getPassword());
-                        p.setComprobado(3);
-                        outred.println(p.toString());
-                        correcto = true;
-                        System.out.println("Creacion Correcta");
-
-                    }
-                } else {
-                    p.setComprobado(ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()));
-                    if (p.getComprobado() == 3) {
-                        correcto = true;
-                    }
-                    System.out.println("Comprobacion de usuario y contraseña");
-
+            p = dec.decodificar(linea);
+            if (p.getComprobado() == -1) {
+                System.out.println("CREANDO USR");
+                if (ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()) != 1) {
+                    p.setComprobado(1);
                     outred.println(p.toString());
-                }
-            }
-            
-            
-            
-            
-            
-            
+                    outred.flush();
+                    System.out.println("USR ya existente");
 
-        } catch (java.io.IOException ioe) {
+                } else {
+                    ControladorServidor.creaUsr(p.getUsuario(), p.getPassword());
+                    p.setComprobado(3);
+                    outred.println(p.toString());
+                    outred.flush();
+                    correcto = true;
+                    System.out.println("Creacion Correcta");
+                    setName(p.getUsuario());
+
+                }
+            } else {
+                p.setComprobado(ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()));
+                if (p.getComprobado() == 3) {
+                    correcto = true;
+                }
+                System.out.println("Comprobacion de usuario y contraseña");
+                outred.println(p.toString());
+                outred.flush();
+                setName(p.getUsuario());
+                
+            }
+        }
+        }catch (java.io.IOException ioe) {
             System.err.println("Cerrando socket de cliente");
             ioe.printStackTrace(System.err);
         }

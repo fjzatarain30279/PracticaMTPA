@@ -59,7 +59,7 @@ public class ControladorUsuarios {
         }
         
     }
-    
+    /*
     public void cerrarConexion(){
         try {
             if (inred != null) {
@@ -76,4 +76,5 @@ public class ControladorUsuarios {
             e.printStackTrace();
         }
     }
+*/
 }

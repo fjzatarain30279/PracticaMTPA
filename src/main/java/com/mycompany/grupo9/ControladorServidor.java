@@ -91,6 +91,14 @@ public class ControladorServidor
     public HashMap<String, String> getListaUsuarios() {
         return listaUsuarios;
     }
+    
+    public String getConectados(){
+        ArrayList<String> conectados=new ArrayList<String>();
+        for(ManejadorCliente m : listaManejadores){
+            conectados.add(m.getName());
+        }
+        return conectados.toString();
+    }
 
     public void setListaUsuarios(HashMap<String, String> listaUsuarios) {
         this.listaUsuarios = listaUsuarios;
