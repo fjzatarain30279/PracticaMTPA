@@ -4,10 +4,9 @@ package com.mycompany.grupo9;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 import com.mycompany.grupo9.paquetes.PaqueteLogin;
 import com.mycompany.grupo9.paquetes.PaquetePartida;
+import com.mycompany.grupo9.paquetes.PaqueteUsr;
 
 public class ManejadorCliente
         extends Thread {
@@ -33,6 +32,15 @@ public class ManejadorCliente
                 if (linea.charAt(0) == 'L') {
                     outred.println(gestionLogin(linea.substring(1)).toString());
                     outred.flush();
+                }else if(linea.charAt(0) == 'A'){
+                    outred.println(conectados());
+                    outred.flush();
+                }else if (linea.charAt(0) == 'U') {
+                    outred.println(gestionUsr(linea.substring(1)).toString());
+                    outred.flush();
+                } else if (linea.charAt(0) == 'P') {
+                    outred.println(gestionPartida(linea.substring(1)).toString());
+                    outred.flush();
                 }
 
             }
@@ -46,6 +54,22 @@ public class ManejadorCliente
     public void sendMessage(byte[] mensaje) throws Exception {
         System.out.println("Haciendo difusion...");
         os.write(mensaje);
+    }
+
+    public PaquetePartida gestionPartida(String linea) {
+        DecodificadorPartida dec = new DecodificadorPartida();
+        PaquetePartida p;
+        p = dec.decodificar(linea);
+
+        return p;
+    }
+
+    public PaqueteUsr gestionUsr(String linea) {
+        DecodificadorUsr dec = new DecodificadorUsr();
+        PaqueteUsr p;
+        p = dec.decodificar(linea);
+
+        return p;
     }
 
     public PaqueteLogin gestionLogin(String linea) {
@@ -64,17 +88,23 @@ public class ManejadorCliente
                 System.out.println("Creacion Correcta");
                 setName(p.getUsuario());
                 ControladorServidor.addManejador(this);
-                
-
             }
         } else {
             p.setComprobado(ControladorServidor.compruebaLogin(p.getUsuario(), p.getPassword()));
             System.out.println("Comprobacion de usuario y contraseña");
-            setName(p.getUsuario());
-            ControladorServidor.addManejador(this);
-
+            if (p.getComprobado() == 3) {
+                setName(p.getUsuario());
+                ControladorServidor.addManejador(this);
+            }
         }
         return p;
     }
-
+    
+    public String conectados(){
+        String listado = "";
+        for(ManejadorCliente m : ControladorServidor.getListaManejadores() ){
+            listado = listado + m.getName() + ";";
+        }
+        return listado;
+    }
 }

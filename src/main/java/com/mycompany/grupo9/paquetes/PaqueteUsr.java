@@ -13,6 +13,24 @@ import javax.swing.AbstractListModel;
  */
 public class PaqueteUsr extends AbstractListModel{
     private ArrayList<String> listaUsuarios;
+    private String seleccionado;
+    private String seleccionador;
+
+    public String getSeleccionado() {
+        return seleccionado;
+    }
+
+    public void setSeleccionado(String seleccionado) {
+        this.seleccionado = seleccionado;
+    }
+
+    public String getSeleccionador() {
+        return seleccionador;
+    }
+
+    public void setSeleccionador(String seleccionador) {
+        this.seleccionador = seleccionador;
+    }
 
     public ArrayList<String> getListaUsuarios() {
         return listaUsuarios;
@@ -24,6 +42,7 @@ public class PaqueteUsr extends AbstractListModel{
     
     public PaqueteUsr(){
         listaUsuarios = new ArrayList<String>();
+        
     }
     
     @Override

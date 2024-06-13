@@ -36,6 +36,7 @@ public class VistaUsuarios extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -62,6 +63,14 @@ public class VistaUsuarios extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1);
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
+
+        jToggleButton1.setText("Esperar");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                esperarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jToggleButton1);
 
         jButton2.setText("Seleccionar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +109,10 @@ public class VistaUsuarios extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         //controlador.cerrarConexion();
     }//GEN-LAST:event_formWindowClosed
+
+    private void esperarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_esperarActionPerformed
+        controlador.procesaEventoEsperar();
+    }//GEN-LAST:event_esperarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,5 +167,6 @@ public class VistaUsuarios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }

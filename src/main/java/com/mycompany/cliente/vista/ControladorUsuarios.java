@@ -4,14 +4,15 @@
  */
 package com.mycompany.cliente.vista;
 
-import com.mycompany.grupo9.DecodificadorUsr;
 import com.mycompany.cliente.main.Cliente;
 import com.mycompany.cliente.modelo.PaqueteUsr;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import javax.swing.ListModel;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,13 +29,27 @@ public class ControladorUsuarios {
         
 
     }
-    
+    public void procesaEventoEsperar(){
+        BufferedReader inred = null;
+        try {
+            String linea;
+            Socket miSocket = Cliente.getSocket();
+            inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+            while ((linea = inred.readLine()) != null){
+                
+            }
+        } catch (IOException ex) {
+        }
+
+    }
     public void procesaEventoSeleccion(int indice){
         String usr = modelo.getElementAt(indice);
         try{
             Socket miSocket = Cliente.getSocket();
             PrintStream o = new PrintStream(miSocket.getOutputStream());
-            o.println(usr);
+            modelo.setSeleccionado(usr);
+            modelo.setSeleccionador(Cliente.getModeloLogin().getUsuario());
+            o.println("U"+ modelo.toString());
             o.flush();
             
             
@@ -49,15 +64,22 @@ public class ControladorUsuarios {
         try {
             Socket miSocket = Cliente.getSocket();
             o = new java.io.PrintStream(miSocket.getOutputStream());
-            o.println("S");
-            System.out.println("Controlador Usuarios " + miSocket.toString());    
+            o.println("A");
+            System.out.println("Controlador Usuarios buscando actualizar...");    
             BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
-            modelo.setListaUsuarios(dec.decodificar(inred.readLine()).getListaUsuarios());
+            modelo.setListaUsuarios(separar(inred.readLine()));
             vista.actualizar(modelo.getListaUsuarios());
         } catch (IOException ex) {
             
         }
         
+    }
+    public ArrayList<String> separar(String linea){
+        ArrayList<String> usr = new ArrayList<String>();
+        for(String s : linea.split(";")){
+            usr.add(s);
+        }
+        return usr;
     }
     /*
     public void cerrarConexion(){
