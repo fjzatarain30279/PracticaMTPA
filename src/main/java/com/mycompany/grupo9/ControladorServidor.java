@@ -160,5 +160,21 @@ public class ControladorServidor
     public static void addManejador(ManejadorCliente c) {
         listaManejadores.add(c);
     }
+    public static ManejadorCliente getManejador(String s){
+        ManejadorCliente m = null;
+        for(ManejadorCliente c : listaManejadores){
+            if(c.getName().equalsIgnoreCase(s)){
+                m = c;
+            }
+        }
+        return m;
+    }
 
+    public static PaquetePartida creaPartida(String seleccionado, String seleccionador){
+        PaquetePartida p = new PaquetePartida(seleccionado, seleccionador);
+        ManejadorCliente c1 = getManejador(seleccionado);
+        listaPartidas.add(p);
+        c1.enviaPartida(p);
+        return p;
+    }
 }

@@ -7,6 +7,10 @@ import java.net.Socket;
 import com.mycompany.grupo9.paquetes.PaqueteLogin;
 import com.mycompany.grupo9.paquetes.PaquetePartida;
 import com.mycompany.grupo9.paquetes.PaqueteUsr;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ManejadorCliente
         extends Thread {
@@ -14,9 +18,11 @@ public class ManejadorCliente
     private Socket cliente; //--> Canal de Lectura y Escritura
     private OutputStream os;
     private InputStream is;
+    private boolean enPartida;
 
     public ManejadorCliente(Socket sck) throws Exception {
         cliente = sck;
+        enPartida = false;
         start();
     }
 
@@ -32,12 +38,15 @@ public class ManejadorCliente
                 if (linea.charAt(0) == 'L') {
                     outred.println(gestionLogin(linea.substring(1)).toString());
                     outred.flush();
-                }else if(linea.charAt(0) == 'A'){
+                } else if (linea.charAt(0) == 'A') {
                     outred.println(conectados());
                     outred.flush();
-                }else if (linea.charAt(0) == 'U') {
-                    outred.println(gestionUsr(linea.substring(1)).toString());
+                } else if (linea.charAt(0) == 'U') {
+                    PaqueteUsr p = gestionUsr(linea.substring(1));
+                    PaquetePartida partida = ControladorServidor.creaPartida(p.getSeleccionado(), p.getSeleccionador());
+                    outred.println("P");
                     outred.flush();
+
                 } else if (linea.charAt(0) == 'P') {
                     outred.println(gestionPartida(linea.substring(1)).toString());
                     outred.flush();
@@ -63,12 +72,18 @@ public class ManejadorCliente
 
         return p;
     }
+    public void enviaPartida(PaquetePartida p){
+        try {
+            PrintStream outred = new java.io.PrintStream(cliente.getOutputStream());
+            outred.println("P");
+        } catch (IOException ex) {
+        }
+    }
 
     public PaqueteUsr gestionUsr(String linea) {
         DecodificadorUsr dec = new DecodificadorUsr();
         PaqueteUsr p;
         p = dec.decodificar(linea);
-
         return p;
     }
 
@@ -99,10 +114,10 @@ public class ManejadorCliente
         }
         return p;
     }
-    
-    public String conectados(){
+
+    public String conectados() {
         String listado = "";
-        for(ManejadorCliente m : ControladorServidor.getListaManejadores() ){
+        for (ManejadorCliente m : ControladorServidor.getListaManejadores()) {
             listado = listado + m.getName() + ";";
         }
         return listado;

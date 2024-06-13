@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  * @author javier
  */
 public class ControladorUsuarios {
+
     private VistaUsuarios vista;
     private PaqueteUsr modelo;
     public static final int PUERTO = 2000;
@@ -26,57 +27,66 @@ public class ControladorUsuarios {
     public ControladorUsuarios(VistaUsuarios vista) {
         this.vista = vista;
         modelo = Cliente.getModeloUsr();
-        
 
     }
-    public void procesaEventoEsperar(){
+
+    public void procesaEventoEsperar() {
         BufferedReader inred = null;
         try {
             String linea;
             Socket miSocket = Cliente.getSocket();
             inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
-            while ((linea = inred.readLine()) != null){
-                
+            linea = inred.readLine();
+            if(linea.equalsIgnoreCase("P")){
+                Cliente.getGestorVistas().mostrarVistaTablero();
             }
         } catch (IOException ex) {
         }
 
     }
-    public void procesaEventoSeleccion(int indice){
+
+    public void procesaEventoSeleccion(int indice) {
         String usr = modelo.getElementAt(indice);
-        try{
+        try {
             Socket miSocket = Cliente.getSocket();
             PrintStream o = new PrintStream(miSocket.getOutputStream());
             modelo.setSeleccionado(usr);
             modelo.setSeleccionador(Cliente.getModeloLogin().getUsuario());
-            o.println("U"+ modelo.toString());
+            o.println("U" + modelo.toString());
             o.flush();
-            
-            
-        }catch(Exception e){
+            String linea;
+            BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+            linea = inred.readLine();
+            if(linea.equalsIgnoreCase("P")){
+                Cliente.getGestorVistas().mostrarVistaTablero();
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void procesaEventoActualizar(){
+
+    public void procesaEventoActualizar() {
         java.io.PrintStream o = null;
-        
+
         DecodificadorUsr dec = new DecodificadorUsr();
         try {
             Socket miSocket = Cliente.getSocket();
             o = new java.io.PrintStream(miSocket.getOutputStream());
             o.println("A");
-            System.out.println("Controlador Usuarios buscando actualizar...");    
+            System.out.println("Controlador Usuarios buscando actualizar...");
             BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
             modelo.setListaUsuarios(separar(inred.readLine()));
             vista.actualizar(modelo.getListaUsuarios());
         } catch (IOException ex) {
-            
+
         }
-        
+
     }
-    public ArrayList<String> separar(String linea){
+
+    public ArrayList<String> separar(String linea) {
         ArrayList<String> usr = new ArrayList<String>();
-        for(String s : linea.split(";")){
+        for (String s : linea.split(";")) {
             usr.add(s);
         }
         return usr;
@@ -98,5 +108,5 @@ public class ControladorUsuarios {
             e.printStackTrace();
         }
     }
-*/
+     */
 }
