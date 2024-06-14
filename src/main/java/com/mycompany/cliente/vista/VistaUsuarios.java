@@ -43,7 +43,7 @@ public class VistaUsuarios extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(828, 200));
-        setPreferredSize(new java.awt.Dimension(706, 300));
+        setPreferredSize(new java.awt.Dimension(1000, 300));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -62,6 +62,7 @@ public class VistaUsuarios extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1);
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(333, 333));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         jToggleButton1.setText("Esperar");
@@ -114,6 +115,9 @@ public class VistaUsuarios extends javax.swing.JFrame {
         controlador.procesaEventoEsperar();
     }//GEN-LAST:event_esperarActionPerformed
 
+    public void setErrMessage(String message){
+        jLabel1.setText(message);
+    }
     /**
      * @param args the command line arguments
      */

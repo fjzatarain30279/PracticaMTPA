@@ -4,7 +4,6 @@
  */
 package com.mycompany.cliente.vista;
 
-import com.mycompany.grupo9.*;
 import java.util.ArrayList;
 import com.mycompany.cliente.modelo.PaqueteUsr;
 

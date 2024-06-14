@@ -37,7 +37,7 @@ public class ControladorUsuarios {
             Socket miSocket = Cliente.getSocket();
             inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
             linea = inred.readLine();
-            if(linea.equalsIgnoreCase("P")){
+            if (linea.equalsIgnoreCase("P")) {
                 Cliente.getGestorVistas().mostrarVistaTablero();
             }
         } catch (IOException ex) {
@@ -47,22 +47,26 @@ public class ControladorUsuarios {
 
     public void procesaEventoSeleccion(int indice) {
         String usr = modelo.getElementAt(indice);
-        try {
-            Socket miSocket = Cliente.getSocket();
-            PrintStream o = new PrintStream(miSocket.getOutputStream());
-            modelo.setSeleccionado(usr);
-            modelo.setSeleccionador(Cliente.getModeloLogin().getUsuario());
-            o.println("U" + modelo.toString());
-            o.flush();
-            String linea;
-            BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
-            linea = inred.readLine();
-            if(linea.equalsIgnoreCase("P")){
-                Cliente.getGestorVistas().mostrarVistaTablero();
-            }
+        if (!usr.equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
+            try {
+                Socket miSocket = Cliente.getSocket();
+                PrintStream o = new PrintStream(miSocket.getOutputStream());
+                modelo.setSeleccionado(usr);
+                modelo.setSeleccionador(Cliente.getModeloLogin().getUsuario());
+                o.println("U" + modelo.toString());
+                o.flush();
+                String linea;
+                BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+                linea = inred.readLine();
+                if (linea.equalsIgnoreCase("P")) {
+                    Cliente.getGestorVistas().mostrarVistaTablero();
+                }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            vista.setErrMessage("Es su propio usuario");
         }
     }
 

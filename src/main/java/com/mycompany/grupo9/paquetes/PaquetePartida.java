@@ -11,7 +11,7 @@ package com.mycompany.grupo9.paquetes;
 public class PaquetePartida {
 
     private char[][] tablero;
-    private int turno;
+    private String turno;
     private int[] movimiento;
     private String jug1;
     private String jug2;
@@ -25,7 +25,7 @@ public class PaquetePartida {
     
     public PaquetePartida(String j1,String j2){
         this.tablero = new char[3][3];
-        this.turno = 1;
+        this.turno = j1;
         this.jug1 = j1;
         this.jug2 = j2;
         this.finalizada = false;
@@ -40,11 +40,11 @@ public class PaquetePartida {
         this.tablero = tablero;
     }
 
-    public int getTurno() {
+    public String getTurno() {
         return turno;
     }
 
-    public void setTurno(int turno) {
+    public void setTurno(String turno) {
         this.turno = turno;
     }
 
