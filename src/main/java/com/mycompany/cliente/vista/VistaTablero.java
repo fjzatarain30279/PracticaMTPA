@@ -4,17 +4,23 @@
  */
 package com.mycompany.cliente.vista;
 
+import com.mycompany.cliente.main.Cliente;
+import com.mycompany.cliente.modelo.PaquetePartida;
+
 /**
  *
  * @author javier
  */
 public class VistaTablero extends javax.swing.JFrame {
 
+    private ControladorTablero controlador;
+
     /**
      * Creates new form Tablero
      */
     public VistaTablero() {
         initComponents();
+        controlador = new ControladorTablero(this);
     }
 
     /**
@@ -320,8 +326,38 @@ public class VistaTablero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        System.out.println(jTextField1.getText());
+        jTextPane1.setText("");
+        String linea = jTextField1.getText();
+        if (linea.equalsIgnoreCase("START")) {
 
+            controlador.procesaEventoActualizar();
+        } else if (linea.equalsIgnoreCase("FIN")) {
+            controlador.procesaEventoFinalizar();
+        } else if (linea.toCharArray().length != 3 || linea.toCharArray()[1] != ','
+                || !Character.isDigit(linea.toCharArray()[0]) || !Character.isDigit(linea.toCharArray()[2])) {
+            jTextPane1.setText("Sintaxis del mov invalida");
+
+        } else {
+            String[] parcial = linea.split(",");
+            int[] jugada = new int[2];
+            jugada[0] = Integer.parseInt(parcial[0]);
+            jugada[1] = Integer.parseInt(parcial[2]);
+            controlador.procesaEventoJugada(jugada);
+        }
     }//GEN-LAST:event_jTextField1ActionPerformed
+    public void actualizar(PaquetePartida p) {
+        label3.setText(Cliente.getModeloLogin().getUsuario());
+
+        if (Cliente.getModeloLogin().getUsuario().equalsIgnoreCase(p.getJug1())) {
+            label5.setText(p.getJug2());
+        } else {
+            label5.setText(p.getJug1());
+        }
+        
+        jTextPane1.setText("Turno de: " + p.getTurno());
+        
+    }
 
     /**
      * @param args the command line arguments

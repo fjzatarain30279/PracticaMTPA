@@ -61,6 +61,20 @@ public class ControladorServidor
 
         }
     }
+    
+    public static synchronized PaquetePartida buscaTablero(String usr){
+        PaquetePartida partida = new PaquetePartida();
+        for(PaquetePartida p : listaPartidas){
+            if(p.getJug1().equalsIgnoreCase(usr)||p.getJug2().equalsIgnoreCase(usr) && !p.isFinalizada()){
+                partida = p;
+                break;
+            }
+            else{
+                partida = null;
+            }
+        }
+        return partida;
+    }
 
     public static synchronized void creaUsr(String usr, String pwd) {
         listaUsuarios.put(usr, pwd);

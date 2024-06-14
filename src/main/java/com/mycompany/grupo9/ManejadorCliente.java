@@ -50,6 +50,10 @@ public class ManejadorCliente
                 } else if (linea.charAt(0) == 'P') {
                     outred.println(gestionPartida(linea.substring(1)).toString());
                     outred.flush();
+                }else if (linea.charAt(0) == 'T') {
+                    PaquetePartida p = ControladorServidor.buscaTablero(linea.split(";")[1]);
+                    outred.println(p.toString());
+                    outred.flush();
                 }
 
             }

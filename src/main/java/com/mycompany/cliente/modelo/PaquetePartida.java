@@ -28,6 +28,7 @@ public class PaquetePartida {
         this.turno = j1;
         this.jug1 = j1;
         this.jug2 = j2;
+        this.movimiento = new int[2];
         this.finalizada = false;
         
     }
@@ -85,17 +86,21 @@ public class PaquetePartida {
     public String toString(){
         String mensaje;
         String tablero= "[";
-        for(int i = 0;i<3;i++){
-            for(int j = 0; j<3; j++){
-                if(i<2&&j<2){
-                tablero= tablero+this.tablero[i][j]+",";
-                }else{
-                    tablero=tablero+this.tablero[i][j];
-                } 
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tablero += this.tablero[i][j];
+                if (j < 2) {
+                    tablero += ",";
+                }
+            }
+            if (i < 2) {
+                tablero += ",";
             }
         }
         tablero=tablero + "]";
-        mensaje = tablero + ";" + this.turno + ";" + this.movimiento.toString()
+        int[] movimientoArray = this.movimiento;
+    String movimientoString = "[" + movimientoArray[0] + "," + movimientoArray[1] + "]";
+        mensaje = tablero + ";" + this.turno + ";" + movimientoString
                 + ";" + this.jug1 + ";" + this.jug2;
         return mensaje;
     }

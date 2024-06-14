@@ -15,21 +15,22 @@ public class PaquetePartida {
     private int[] movimiento;
     private String jug1;
     private String jug2;
-    
+
     private boolean finalizada;
-    
+
     public PaquetePartida() {
         this.tablero = new char[3][3];
         this.finalizada = false;
     }
-    
-    public PaquetePartida(String j1,String j2){
+
+    public PaquetePartida(String j1, String j2) {
         this.tablero = new char[3][3];
         this.turno = j1;
         this.jug1 = j1;
         this.jug2 = j2;
+        this.movimiento = new int[2];
         this.finalizada = false;
-        
+
     }
 
     public char[][] getTablero() {
@@ -79,26 +80,29 @@ public class PaquetePartida {
     public void setFinalizada(boolean finalizada) {
         this.finalizada = finalizada;
     }
-    
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         String mensaje;
-        String tablero= "[";
-        for(int i = 0;i<3;i++){
-            for(int j = 0; j<3; j++){
-                if(i<2&&j<2){
-                tablero= tablero+this.tablero[i][j]+",";
-                }else{
-                    tablero=tablero+this.tablero[i][j];
-                } 
+        String tablero = "[";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tablero += this.tablero[i][j];
+                if (j < 2) {
+                    tablero += ",";
+                }
+            }
+            if (i < 2) {
+                tablero += ",";
             }
         }
-        tablero=tablero + "]";
-        mensaje = tablero + ";" + this.turno + ";" + this.movimiento.toString()
+        tablero += "]";
+        
+        int[] movimientoArray = this.movimiento;
+        String movimientoString = "[" + movimientoArray[0] + "," + movimientoArray[1] + "]";
+        mensaje = tablero + ";" + this.turno + ";" + movimientoString
                 + ";" + this.jug1 + ";" + this.jug2;
         return mensaje;
     }
-    
-    
+
 }
