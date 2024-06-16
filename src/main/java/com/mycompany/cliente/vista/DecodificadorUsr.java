@@ -9,11 +9,17 @@ import com.mycompany.cliente.modelo.PaqueteUsr;
 
 
 /**
- *
- * @author javier
+ * Clase que implementa la decodificación de los usuarios de cadena a objeto de 
+ * la clase
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class DecodificadorUsr implements Decodificador {
-    
+    /**
+     * Método que decodifica una cadena de carácteres a un objeto de la clase
+     * @param linea Contiene la información del usuario separadas por ;
+     * @return paquete Objeto con los datos decodificados
+     */
     @Override
     public PaqueteUsr decodificar(String linea){
         PaqueteUsr paquete = new PaqueteUsr();
