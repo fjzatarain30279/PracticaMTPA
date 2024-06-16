@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+/**
+ * Clase que implementa el manejador del cliente
+ * @author Javier Ztaraín
+ * @authro Blanca Jorge
+ */
 public class ManejadorCliente
         extends Thread {
 
@@ -19,13 +23,19 @@ public class ManejadorCliente
     private OutputStream os;
     private InputStream is;
     private boolean enPartida;
-
+/**
+ * Constructor de la clase
+ * @param sck el socket del cliente
+ * @throws Exception Si ocurre algún error al iniciar el cliente
+*/
     public ManejadorCliente(Socket sck) throws Exception {
         cliente = sck;
         enPartida = false;
         start();
     }
-
+/**
+ * Método que se ejecuta al iniciar los hilos
+ */
     public void run() {
 
         try {
@@ -63,12 +73,20 @@ public class ManejadorCliente
         }
 
     }
-
+/**
+ * Envía un mensaje al cliente
+ * @param mensaje Lo que se quiera transmitir
+ * @throws Exception Si ocurre un error al enviar el mensaje 
+ */
     public void sendMessage(byte[] mensaje) throws Exception {
         System.out.println("Haciendo difusion...");
         os.write(mensaje);
     }
-
+/**
+ * Gestiona una partida a partir de una línea de texto.
+ * @param linea La línea de texto que contiene la información de la partida
+ * @return Un objeto PaquetePartida que representa la partida gestionada
+ */
     public PaquetePartida gestionPartida(String linea) {
         DecodificadorPartida dec = new DecodificadorPartida();
         PaquetePartida p;
@@ -76,6 +94,10 @@ public class ManejadorCliente
 
         return p;
     }
+/**
+ * Envía la partida al cliente.
+ * @param p La partida a enviar
+ */
     public void enviaPartida(PaquetePartida p){
         try {
             PrintStream outred = new java.io.PrintStream(cliente.getOutputStream());
@@ -83,14 +105,23 @@ public class ManejadorCliente
         } catch (IOException ex) {
         }
     }
-
+/**
+ * Gestiona la información del usuario.
+ *
+ * @param linea La línea de texto que contiene la información del usuario
+ * @return Un objeto PaqueteUsr que representa el usuario gestionado
+ */
     public PaqueteUsr gestionUsr(String linea) {
         DecodificadorUsr dec = new DecodificadorUsr();
         PaqueteUsr p;
         p = dec.decodificar(linea);
         return p;
     }
-
+/**
+ * Gestiona la información del inicio de sesión
+ * @param linea Línea que contiene las credenciales
+ * @return p El inicio de sesión
+ */
     public PaqueteLogin gestionLogin(String linea) {
         DecodificadorLogin dec = new DecodificadorLogin();
         PaqueteLogin p;
@@ -118,7 +149,10 @@ public class ManejadorCliente
         }
         return p;
     }
-
+    /**
+     * Obtiene la lista de usuarios conectados
+     * @return listado Lista de usuarios
+     */
     public String conectados() {
         String listado = "";
         for (ManejadorCliente m : ControladorServidor.getListaManejadores()) {
