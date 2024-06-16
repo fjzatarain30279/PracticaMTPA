@@ -13,8 +13,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- *
- * @author javier
+ * Clase que controla el menú y se encarga de procesar el inicio de sesión y la
+ * crecaión de usuarios
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class ControladorUsuarios {
 
@@ -27,7 +29,9 @@ public class ControladorUsuarios {
         modelo = Cliente.getModeloUsr();
 
     }
-
+    /**
+     * Método encargado de procesar la espera antes de iniciar una partida
+     */
     public void procesaEventoEsperar() {
         BufferedReader inred = null;
         try {
@@ -42,7 +46,10 @@ public class ControladorUsuarios {
         }
 
     }
-
+    /**
+     * Método que procesa la selección de un usuario por parte de otro
+     * @param indice 
+     */
     public void procesaEventoSeleccion(int indice) {
         String usr = modelo.getElementAt(indice);
         if (!usr.equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
@@ -67,7 +74,9 @@ public class ControladorUsuarios {
             vista.setErrMessage("Es su propio usuario");
         }
     }
-
+    /**
+     * Método que procesa las actualizaciones de los usuarios
+     */
     public void procesaEventoActualizar() {
         java.io.PrintStream o = null;
 
@@ -85,7 +94,11 @@ public class ControladorUsuarios {
         }
 
     }
-
+    /**
+     * Método que separa el usuario localizado en las listas
+     * @param linea Cadena donde separado por ; encontramos al usuario
+     * @return usr El usuario 
+     */
     public ArrayList<String> separar(String linea) {
         ArrayList<String> usr = new ArrayList<String>();
         for (String s : linea.split(";")) {
