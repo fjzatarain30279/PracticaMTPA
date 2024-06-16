@@ -45,8 +45,8 @@ public class VistaUsuarios extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(828, 200));
         setPreferredSize(new java.awt.Dimension(1000, 300));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -107,13 +107,13 @@ public class VistaUsuarios extends javax.swing.JFrame {
         
     }//GEN-LAST:event_seleccionarActionPerformed
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        //controlador.cerrarConexion();
-    }//GEN-LAST:event_formWindowClosed
-
     private void esperarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_esperarActionPerformed
         controlador.procesaEventoEsperar();
     }//GEN-LAST:event_esperarActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        controlador.procesaEventoCerrar();
+    }//GEN-LAST:event_formWindowClosing
 
     public void setErrMessage(String message){
         jLabel1.setText(message);

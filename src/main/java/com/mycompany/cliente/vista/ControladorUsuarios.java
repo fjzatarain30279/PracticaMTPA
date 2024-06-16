@@ -106,22 +106,14 @@ public class ControladorUsuarios {
         }
         return usr;
     }
-    /*
-    public void cerrarConexion(){
+    public void procesaEventoCerrar() {
+        java.io.PrintStream o = null;
         try {
-            if (inred != null) {
-                inred.close();
-            }
-            if (outred != null) {
-                outred.close();
-            }
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-            }
-            System.out.println("Conexión cerrada.");
+            Socket miSocket = Cliente.getSocket();
+            o = new java.io.PrintStream(miSocket.getOutputStream());
+            o.println("X");
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
-     */
 }

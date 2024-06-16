@@ -9,8 +9,7 @@ import com.mycompany.grupo9.paquetes.PaquetePartida;
 import com.mycompany.grupo9.paquetes.PaqueteUsr;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 /**
  * Clase que implementa el manejador del cliente
  * @author Javier Ztaraín
@@ -64,12 +63,14 @@ public class ManejadorCliente
                     PaquetePartida p = ControladorServidor.buscaTablero(linea.split(";")[1]);
                     outred.println(p.toString());
                     outred.flush();
+                }else if(linea.charAt(0)=='X'){
+                    cliente.close();
+                    ControladorServidor.removeManejador(this);
                 }
 
             }
         } catch (java.io.IOException ioe) {
             System.err.println("Cerrando socket de cliente");
-            ioe.printStackTrace(System.err);
         }
 
     }
@@ -91,6 +92,7 @@ public class ManejadorCliente
         DecodificadorPartida dec = new DecodificadorPartida();
         PaquetePartida p;
         p = dec.decodificar(linea);
+        
 
         return p;
     }

@@ -63,7 +63,6 @@ public class ControladorServidor
             // Si se lanza una SocketException, significa que el servidor se cerró
             System.out.println("El servidor se ha detenido.");
         }
-        System.out.println("server.ControladorServidor.startListeningUsers()");
     }
     /**
      * Método encargardo de dinfundir un mensaje a todos los usuarios conectados
@@ -283,4 +282,7 @@ public class ControladorServidor
         c1.enviaPartida(p);
         return p;
     }
+    public static void removeManejador(ManejadorCliente manejador) {
+    listaManejadores.remove(manejador);
+}
 }
