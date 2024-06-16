@@ -8,7 +8,8 @@ import com.mycompany.cliente.main.Cliente;
 import com.mycompany.cliente.modelo.PaqueteLogin;
 
 /**
- *
+ * Clase que controla el menú y se encarga de procesar el inicio de sesión y la
+ * crecaión de usuarios
  * @author javier
  */
 public class ControladorMenu {
@@ -22,7 +23,10 @@ public class ControladorMenu {
         modelo = Cliente.getModeloLogin();
 
     }
-
+    /**
+     * Método encargado de procesar la creación de usuario validando las 
+     * distintas entradas y comprobando que no existe previamente.
+     */
     public void procesaEventoCrearUsuario() {
         modelo.setUsuario(vista.getUsr());
         modelo.setPassword(vista.getPswd());
@@ -72,7 +76,10 @@ public class ControladorMenu {
             }
         }
     }
-
+    /**
+     * Método encargadi de validar que los datos introducidos sean de una longitud
+     * correcta y correspondan a las de un usuario registrado
+     */
     public void procesaEventoIniciarSesion() {
         modelo.setUsuario(vista.getUsr());
         modelo.setPassword(vista.getPswd());
