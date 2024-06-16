@@ -7,11 +7,16 @@ package com.mycompany.grupo9;
 import com.mycompany.grupo9.paquetes.PaquetePartida;
 
 /**
- *
- * @author javier
+ * Clase que implementa el decodificador de la partida
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class DecodificadorPartida implements Decodificador {
-
+    /**
+     * Decodifica una cadena de texto en un objeto de la clase
+     * @param linea Línea de texto que contiene los datos de la partida
+     * @return paquete Objeto que contiene los datos decodificados
+     */
     @Override
     public PaquetePartida decodificar(String linea) {
         PaquetePartida p = new PaquetePartida();
