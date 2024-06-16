@@ -7,11 +7,16 @@ package com.mycompany.grupo9;
 import com.mycompany.grupo9.paquetes.PaqueteLogin;
 
 /**
- *
- * @author javier
+ * Clase que implementa el decodificador del login
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class DecodificadorLogin implements Decodificador{
-    
+    /**
+     * Decodifica una cadena de texto en un objeto de la clase
+     * @param linea Línea de texto que contiene los datos del usuario
+     * @return paquete Objeto que contiene los datos decodificados
+     */
     @Override
     public PaqueteLogin decodificar(String linea){
         PaqueteLogin p = new PaqueteLogin();
