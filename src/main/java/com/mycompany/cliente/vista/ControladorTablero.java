@@ -11,20 +11,28 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- *
- * @author javier
+ * Clase que controla el tablero y se encarga de procesar la actualización de
+ * la partida en curso así como de la finalización de la misma y las jugadas.
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class ControladorTablero {
     private VistaTablero vista;
     private PaquetePartida modelo;
     public static final int PUERTO = 2000;
-
+    /**
+     * Método que muestra el tablero con el modelado de la partida
+     * @param vista El tablero
+     */
     public ControladorTablero(VistaTablero vista) {
         this.vista = vista;
         modelo = Cliente.getModeloPartida();
 
     }
-    
+    /**
+     * Método encargado de gestionar la actualización de lo que se vaya dando 
+     * en la partida
+     */
     public void procesaEventoActualizar(){
         java.io.PrintStream o = null;
 
@@ -44,11 +52,16 @@ public class ControladorTablero {
 
         
     }
-    
+    /**
+     * Método que procesa la finalización de los eventos
+     */
     public void procesaEventoFinalizar(){
         
     }
-    
+    /**
+     * Método que procesa la jugada
+     * @param j 
+     */
     public void procesaEventoJugada(int[] j){
         
     }
