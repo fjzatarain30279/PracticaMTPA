@@ -7,11 +7,17 @@ package com.mycompany.cliente.vista;
 import com.mycompany.cliente.modelo.PaquetePartida;
 
 /**
- *
- * @author javier
+ * Clase que implementa la decodificación de los datos de la partida de cadena
+ * a objeto de la clase
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class DecodificadorPartida implements Decodificador {
-
+    /**
+     * Método que decodifica una cadena de carácteres a un objeto de la clase
+     * @param linea Contiene la información de la partida separadas por ;
+     * @return paquete Objeto con los datos decodificados
+     */
     @Override
     public PaquetePartida decodificar(String linea) {
         PaquetePartida p = new PaquetePartida();
