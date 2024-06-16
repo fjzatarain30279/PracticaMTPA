@@ -12,6 +12,7 @@ import java.io.PrintStream;
 
 /**
  * Clase que implementa el manejador del cliente
+ *
  * @author Javier Ztaraín
  * @authro Blanca Jorge
  */
@@ -22,19 +23,22 @@ public class ManejadorCliente
     private OutputStream os;
     private InputStream is;
     private boolean enPartida;
-/**
- * Constructor de la clase
- * @param sck el socket del cliente
- * @throws Exception Si ocurre algún error al iniciar el cliente
-*/
+
+    /**
+     * Constructor de la clase
+     *
+     * @param sck el socket del cliente
+     * @throws Exception Si ocurre algún error al iniciar el cliente
+     */
     public ManejadorCliente(Socket sck) throws Exception {
         cliente = sck;
         enPartida = false;
         start();
     }
-/**
- * Método que se ejecuta al iniciar los hilos
- */
+
+    /**
+     * Método que se ejecuta al iniciar los hilos
+     */
     public void run() {
 
         try {
@@ -57,13 +61,14 @@ public class ManejadorCliente
                     outred.flush();
 
                 } else if (linea.charAt(0) == 'P') {
+                    System.out.println(linea);
                     outred.println(gestionPartida(linea.substring(1)).toString());
                     outred.flush();
-                }else if (linea.charAt(0) == 'T') {
+                } else if (linea.charAt(0) == 'T') {
                     PaquetePartida p = ControladorServidor.buscaTablero(linea.split(";")[1]);
                     outred.println(p.toString());
                     outred.flush();
-                }else if(linea.charAt(0)=='X'){
+                } else if (linea.charAt(0) == 'X') {
                     cliente.close();
                     ControladorServidor.removeManejador(this);
                 }
@@ -74,56 +79,82 @@ public class ManejadorCliente
         }
 
     }
-/**
- * Envía un mensaje al cliente
- * @param mensaje Lo que se quiera transmitir
- * @throws Exception Si ocurre un error al enviar el mensaje 
- */
+
+    /**
+     * Envía un mensaje al cliente
+     *
+     * @param mensaje Lo que se quiera transmitir
+     * @throws Exception Si ocurre un error al enviar el mensaje
+     */
     public void sendMessage(byte[] mensaje) throws Exception {
         System.out.println("Haciendo difusion...");
         os.write(mensaje);
     }
-/**
- * Gestiona una partida a partir de una línea de texto.
- * @param linea La línea de texto que contiene la información de la partida
- * @return Un objeto PaquetePartida que representa la partida gestionada
- */
+
+    /**
+     * Gestiona una partida a partir de una línea de texto.
+     *
+     * @param linea La línea de texto que contiene la información de la partida
+     * @return Un objeto PaquetePartida que representa la partida gestionada
+     */
     public PaquetePartida gestionPartida(String linea) {
         DecodificadorPartida dec = new DecodificadorPartida();
         PaquetePartida p;
         p = dec.decodificar(linea);
-        
+        System.out.println(p.toString());
+        if (!compruebaJugada(p.getTablero(), p.getMovimiento())) {
+            return p;
+        } else {
+            p = hacerJugada(p);
+                    System.out.println(p.toString());
 
-        return p;
+            ControladorServidor.modificaTablero(p);
+            if (compruebaTablero(p.getTablero())) {
+                p.setGanador(p.getTurno());
+                p.setFinalizada(true);
+                ControladorServidor.partidaFinalizada(p);
+            }
+            return p;
+        }
     }
-/**
- * Envía la partida al cliente.
- * @param p La partida a enviar
- */
     public void enviaPartida(PaquetePartida p){
+        try {
+            PrintStream outred = new java.io.PrintStream(cliente.getOutputStream());
+            outred.println(p.toString());
+        } catch (IOException ex) {
+        }
+    }
+
+    /**
+     * Envía la creacion de partida al cliente.
+     */
+    public void enviaCrearPartida() {
         try {
             PrintStream outred = new java.io.PrintStream(cliente.getOutputStream());
             outred.println("P");
         } catch (IOException ex) {
         }
     }
-/**
- * Gestiona la información del usuario.
- *
- * @param linea La línea de texto que contiene la información del usuario
- * @return Un objeto PaqueteUsr que representa el usuario gestionado
- */
+
+    /**
+     * Gestiona la información del usuario.
+     *
+     * @param linea La línea de texto que contiene la información del usuario
+     * @return Un objeto PaqueteUsr que representa el usuario gestionado
+     */
     public PaqueteUsr gestionUsr(String linea) {
         DecodificadorUsr dec = new DecodificadorUsr();
         PaqueteUsr p;
         p = dec.decodificar(linea);
         return p;
     }
-/**
- * Gestiona la información del inicio de sesión
- * @param linea Línea que contiene las credenciales
- * @return p El inicio de sesión
- */
+
+    /**
+     * Gestiona la información del inicio de sesión
+     *
+     * @param linea Línea que contiene las credenciales
+     * @return p El inicio de sesión
+     */
     public PaqueteLogin gestionLogin(String linea) {
         DecodificadorLogin dec = new DecodificadorLogin();
         PaqueteLogin p;
@@ -151,8 +182,10 @@ public class ManejadorCliente
         }
         return p;
     }
+
     /**
      * Obtiene la lista de usuarios conectados
+     *
      * @return listado Lista de usuarios
      */
     public String conectados() {
@@ -161,5 +194,58 @@ public class ManejadorCliente
             listado = listado + m.getName() + ";";
         }
         return listado;
+    }
+    public boolean isLleno(char[][] board){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(board[i][j] != 'X' && board[i][j] != 'O' ){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean compruebaTablero(char[][] board) {
+        // Check rows
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && (board[i][0] == 'X'||board[i][0] == 'O')) {
+                return true;
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i < 3; i++) {
+            if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && (board[i][0] == 'X'||board[i][0] == 'O')) {
+                return true;
+            }
+        }
+
+        // Check diagonals
+        if (board[0][0] == board[1][1] && board[1][1] == board[2][2]  && (board[0][0] == 'X'||board[0][0] == 'O')) {
+            return true;
+        }
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && (board[0][2] == 'X'||board[0][2] == 'O')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean compruebaJugada(char[][] tablero, int[] jugada) {
+        if (tablero[jugada[0]][jugada[1]] == 'X' || tablero[jugada[0]][jugada[1]] == 'O') {
+            return false;
+        }
+        return true;
+    }
+
+    public PaquetePartida hacerJugada(PaquetePartida p) {
+        if (p.getTurno().equalsIgnoreCase(p.getJug1())) {
+            p.getTablero()[p.getMovimiento()[0]][p.getMovimiento()[1]] = 'X';
+            p.setTurno(p.getJug2());
+        } else {
+            p.getTablero()[p.getMovimiento()[0]][p.getMovimiento()[1]] = 'O';
+            p.setTurno(p.getJug1());
+        }
+        return p;
     }
 }

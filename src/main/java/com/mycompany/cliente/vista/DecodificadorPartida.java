@@ -42,6 +42,8 @@ public class DecodificadorPartida implements Decodificador {
         p.setMovimiento(mov);
         p.setJug1(parcial[3]);
         p.setJug2(parcial[4]);
+        p.setFinalizada(Boolean.getBoolean(parcial[5]));
+        p.setGanador(parcial[6]);
         
         return p;
     }

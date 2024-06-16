@@ -18,6 +18,7 @@ public class PaquetePartida {
     private String jug1;
     private String jug2;
     private boolean finalizada;
+    private String ganador;
 
     /**
      * Constructor por defecto que inicializa el tablero y marca la partida como no finalizada.
@@ -25,6 +26,15 @@ public class PaquetePartida {
     public PaquetePartida() {
         this.tablero = new char[3][3];
         this.finalizada = false;
+        this.ganador = "";
+    }
+
+    public String getGanador() {
+        return ganador;
+    }
+
+    public void setGanador(String ganador) {
+        this.ganador = ganador;
     }
 
     /**
@@ -160,7 +170,7 @@ public class PaquetePartida {
         tablero = tablero + "]";
         int[] movimientoArray = this.movimiento;
         String movimientoString = "[" + movimientoArray[0] + "," + movimientoArray[1] + "]";
-        mensaje = tablero + ";" + this.turno + ";" + movimientoString + ";" + this.jug1 + ";" + this.jug2;
+        mensaje = tablero + ";" + this.turno + ";" + movimientoString + ";" + this.jug1 + ";" + this.jug2 + ";" + this.finalizada + ";" + this.ganador;
         return mensaje;
     }
 }

@@ -51,6 +51,13 @@ public class ControladorTablero {
             System.out.println(linea);
             modelo = dec.decodificar(linea);
             vista.actualizar(modelo);
+            if (!modelo.getTurno().equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
+                linea = inred.readLine();
+                System.out.println("Act " + linea);
+                modelo = dec.decodificar(linea);
+                vista.actualizar(modelo);
+            }
+
         } catch (IOException ex) {
 
         }
@@ -70,20 +77,38 @@ public class ControladorTablero {
      * @param j
      */
     public void procesaEventoJugada(int[] j) {
-        modelo.setMovimiento(j);
-        java.io.PrintStream o = null;
-        DecodificadorPartida dec = new DecodificadorPartida();
-        try {
-            Socket miSocket = Cliente.getSocket();
-            o = new java.io.PrintStream(miSocket.getOutputStream());
-            o.println("P" + modelo.toString());
-            BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
-            String linea = inred.readLine();
-            System.out.println(linea);
-            modelo = dec.decodificar(linea);
-            vista.actualizar(modelo);
-        } catch (IOException ex) {
+        if (!modelo.getTurno().equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
+            vista.mensajeErr("No es su turno!!!!");
+        } else {
+            modelo.setMovimiento(j);
+            java.io.PrintStream o = null;
+            DecodificadorPartida dec = new DecodificadorPartida();
+            try {
+                Socket miSocket = Cliente.getSocket();
+                o = new java.io.PrintStream(miSocket.getOutputStream());
+                o.println("P" + modelo.toString());
+                BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
+                String linea = inred.readLine();
+                System.out.println("jugada recibida" +linea);
+                PaquetePartida p = dec.decodificar(linea);
+                
+                if (modelo.getTurno().equalsIgnoreCase(p.getTurno())) {
+                    vista.mensajeErr("La jugada introducida no es posible");
+                } else {
+                    modelo = p;
+                    vista.actualizar(modelo);
+                    //linea= inred.readLine();
+                    procesaEventoActualizar();
+                    vista.actualizar(modelo);
+                    if (modelo.isFinalizada()) {
+                        vista.ganador(modelo.getGanador());
+                        vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
+                    }
+                }
 
+            } catch (IOException ex) {
+
+            }
         }
     }
 

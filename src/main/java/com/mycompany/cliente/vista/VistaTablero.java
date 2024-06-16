@@ -461,7 +461,12 @@ public class VistaTablero extends javax.swing.JFrame {
             controlador.procesaEventoJugada(jugada);
         }
     }//GEN-LAST:event_jTextField1ActionPerformed
-
+    public void ganador(String s){
+        jLabel2.setText(s);
+    }
+    public void mensajeErr(String s){
+        jTextPane1.setText(s);
+    }
     private void eventoCerrarConexion(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_eventoCerrarConexion
         controlador.procesaEventoCerrar();
     }//GEN-LAST:event_eventoCerrarConexion
