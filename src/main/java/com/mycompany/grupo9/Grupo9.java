@@ -7,13 +7,15 @@ package com.mycompany.grupo9;
 import java.util.Scanner;
 
 /**
- *ggi 
-* @author javier
+ * Clase principal del servidor
+* @author Javier Zataraín
+* @author Blanca Jorge
  */
 public class Grupo9 {
 
     /**
-     * @param args the command line arguments
+     * Método principal del servidor
+     * @param args Comando de líneas de argumento
      */
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
