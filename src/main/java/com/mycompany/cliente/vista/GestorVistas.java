@@ -1,4 +1,4 @@
-/*
+}/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -7,8 +7,10 @@ package com.mycompany.cliente.vista;
 import javax.swing.JFrame;
 
 /**
- *
- * @author javier
+ * Clase que gestiona la visibilidad del menú de inicio, los usuarios 
+ * disponibles y el tablero de la partida
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class GestorVistas {
     private JFrame estadoActual;
