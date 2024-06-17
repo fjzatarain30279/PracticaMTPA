@@ -12,7 +12,7 @@ import java.net.Socket;
 /**
  * La clase Cliente se encarga de inicializar las capas del modelo MVC (las capas modelo, vista y controlador),
  * que son necesarios para ejecutar la aplicación cliente.
- * @author Javier Zaratrain
+ * @author Javier Zatarain
  * @author Blanca Jorge
  */
 public class Cliente {
