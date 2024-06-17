@@ -30,7 +30,7 @@ public class PaqueteLogin {
     }
     /**
      * Método que sirve para establecer el nombre de usuario
-     * @param usuario
+     * @param usuario Nombre del usuario
      */
     public void setUsuario(String usuario) {
         this.usuario = usuario;
