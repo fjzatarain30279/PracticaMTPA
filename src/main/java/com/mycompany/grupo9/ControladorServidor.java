@@ -58,6 +58,7 @@ public class ControladorServidor
     public void startListeningUsers() throws Exception {
         setListaUsuarios(LectorFicheros.lecturaFichero("Usuarios.txt"));
         setRanking(LectorFicheros.lecturaPuntuaciones("Puntuaciones.txt"));
+        setListaPartidas(LectorFicheros.lecturaPartidas("Partidas.txt"));
         try {
             while (isActive()) {
                 mostrarMenu();
@@ -97,7 +98,7 @@ public class ControladorServidor
     public static synchronized PaquetePartida buscaTablero(String usr) {
         PaquetePartida partida = new PaquetePartida();
         for (PaquetePartida p : listaPartidas) {
-            if (p.getJug1().equalsIgnoreCase(usr) || p.getJug2().equalsIgnoreCase(usr) && !p.isFinalizada()) {
+            if (p.getJug1().equalsIgnoreCase(usr) && !p.isFinalizada()|| p.getJug2().equalsIgnoreCase(usr) && !p.isFinalizada()) {
                 partida = p;
                 break;
             } else {
@@ -107,22 +108,31 @@ public class ControladorServidor
         return partida;
     }
 
-    public static synchronized void modificaTablero(PaquetePartida p) {
+    public static synchronized PaquetePartida modificaTablero(PaquetePartida p) {
+        String ganador = p.getTurno();
+        p = hacerJugada(p);
         for (PaquetePartida partida : listaPartidas) {
             if (partida.getJug1().equalsIgnoreCase(p.getJug1()) || partida.getJug2().equalsIgnoreCase(p.getJug2()) && !p.isFinalizada()) {
                 partida.setTablero(p.getTablero());
                 partida.setMovimiento(p.getMovimiento());
                 partida.setTurno(p.getTurno());
                 partida.setFinalizada(p.isFinalizada());
-                ManejadorCliente c = getManejador(p.getTurno());
-                c.enviaPartida(p);
-                        System.out.println("controladorservidro "+ c.getName() + p.toString());
-
+                if (compruebaTablero(partida.getTablero())) {
+                    partida.setGanador(ganador);
+                    partida.setFinalizada(true);
+                    
+                }
+                ManejadorCliente c = getManejador(partida.getTurno());
+                c.enviaPartida(partida);
+                System.out.println("controladorservidro " + c.getName() +"  " + partida.toString());
+                p = partida;
                 break;
             }
         }
+        return p;
     }
-    public static synchronized void partidaFinalizada(PaquetePartida p){
+
+    public static synchronized void partidaFinalizada(PaquetePartida p) {
         for (PaquetePartida partida : listaPartidas) {
             if (partida.getJug1().equalsIgnoreCase(p.getJug1()) || partida.getJug2().equalsIgnoreCase(p.getJug2()) && !p.isFinalizada()) {
                 partida.setTablero(p.getTablero());
@@ -361,5 +371,41 @@ public class ControladorServidor
 
     public static void removeManejador(ManejadorCliente manejador) {
         listaManejadores.remove(manejador);
+    }
+
+    public static boolean compruebaTablero(char[][] board) {
+        // Check rows
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && (board[i][0] != '-')) {
+                return true;
+            }
+        }
+
+        // Check columns
+        for (int i = 0; i < 3; i++) {
+            if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && (board[i][0] != '-')) {
+                return true;
+            }
+        }
+
+        // Check diagonals
+        if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && (board[0][0] != '-')) {
+            return true;
+        }
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && (board[0][2] != '-')) {
+            return true;
+        }
+
+        return false;
+    }
+    public static PaquetePartida hacerJugada(PaquetePartida p) {
+        if (p.getTurno().equalsIgnoreCase(p.getJug1())) {
+            p.getTablero()[p.getMovimiento()[0]][p.getMovimiento()[1]] = 'X';
+            p.setTurno(p.getJug2());
+        } else {
+            p.getTablero()[p.getMovimiento()[0]][p.getMovimiento()[1]] = 'O';
+            p.setTurno(p.getJug1());
+        }
+        return p;
     }
 }

@@ -8,13 +8,15 @@ import java.util.Scanner;
 
 /**
  * Clase principal del servidor
-* @author Javier Zataraín
-* @author Blanca Jorge
+ *
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class Grupo9 {
 
     /**
      * Método principal del servidor
+     *
      * @param args Comando de líneas de argumento
      */
     public static void main(String[] args) throws Exception {
@@ -32,6 +34,8 @@ public class Grupo9 {
                     System.out.println(srv.getConectados());
                     break;
                 case 3:
+                    System.out.println(srv.getListaPartidas().toString());
+
                     break;
                 case 0:
                     System.out.println("Saliendo del programa...");

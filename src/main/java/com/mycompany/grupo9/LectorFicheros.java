@@ -45,7 +45,15 @@ public class LectorFicheros {
      */
     public static ArrayList<PaquetePartida> lecturaPartidas(String linea){
         ArrayList<PaquetePartida> listaPartidas = new ArrayList();
-
+        DecodificadorPartida dec = new DecodificadorPartida();
+        try (BufferedReader br = new BufferedReader(new FileReader(linea))) {
+            String aux;
+            while ((aux = br.readLine()) != null) {
+                listaPartidas.add(dec.decodificar(aux));
+            }
+        } catch (IOException e) {
+            System.out.println("Fichero de usuarios no encontrado...");
+        }
         
         return listaPartidas;
     }

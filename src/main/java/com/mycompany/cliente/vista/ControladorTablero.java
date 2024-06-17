@@ -53,25 +53,28 @@ public class ControladorTablero {
             vista.actualizar(modelo);
             if (modelo.isFinalizada()) {
                 vista.actualizar(modelo);
-                vista.ganador(modelo.getGanador());
+                vista.ganador("GANADOR: " + modelo.getGanador());
                 vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
-            }
-            if (!modelo.getTurno().equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
-                linea = inred.readLine();
-                System.out.println("Act " + linea);
-                modelo = dec.decodificar(linea);
-                vista.actualizar(modelo);
-            }
-
-        } catch (IOException ex) {
+            } else {
+                if (!modelo.getTurno().equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
+                    linea = inred.readLine();
+                    System.out.println("Act " + linea);
+                    modelo = dec.decodificar(linea);
+                    vista.actualizar(modelo);
+                    if (modelo.isFinalizada()) {
+                        vista.ganador("GANADOR: " + modelo.getGanador());
+                        vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
+                    }
+                    }
+                }
+            }catch (IOException ex) {
 
         }
 
-    }
-
-    /**
-     * Método que procesa la finalización de los eventos
-     */
+        }
+        /**
+         * Método que procesa la finalización de los eventos
+         */
     public void procesaEventoFinalizar() {
 
     }
@@ -98,7 +101,7 @@ public class ControladorTablero {
                 PaquetePartida p = dec.decodificar(linea);
                 if (p.isFinalizada()) {
                     vista.actualizar(p);
-                    vista.ganador(p.getGanador());
+                    vista.ganador("GANADOR: " + p.getGanador());
                     vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
                 } else {
                     if (modelo.getTurno().equalsIgnoreCase(p.getTurno())) {
@@ -108,7 +111,6 @@ public class ControladorTablero {
                         vista.actualizar(modelo);
                         //linea= inred.readLine();
                         procesaEventoActualizar();
-                        vista.actualizar(modelo);
 
                     }
                 }

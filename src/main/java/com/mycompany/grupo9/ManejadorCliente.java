@@ -101,25 +101,18 @@ public class ManejadorCliente
         DecodificadorPartida dec = new DecodificadorPartida();
         PaquetePartida p;
         p = dec.decodificar(linea);
-        System.out.println(p.toString());
+        System.out.println("   " + this.getName() + "    " + p.toString());
+
         if (!compruebaJugada(p.getTablero(), p.getMovimiento())) {
             return p;
         } else {
-            p = hacerJugada(p);
-                    System.out.println(p.toString());
+            
 
-            ControladorServidor.modificaTablero(p);
-            if (compruebaTablero(p.getTablero())) {
-                p.setGanador(p.getTurno());
-                p.setFinalizada(true);
-                ControladorServidor.partidaFinalizada(p);
-                ManejadorCliente c = ControladorServidor.getManejador(p.getTurno());
-                c.enviaPartida(p);
-            }
-            return p;
+            return ControladorServidor.modificaTablero(p);
         }
     }
-    public void enviaPartida(PaquetePartida p){
+
+    public void enviaPartida(PaquetePartida p) {
         try {
             PrintStream outred = new java.io.PrintStream(cliente.getOutputStream());
             outred.println(p.toString());
@@ -197,40 +190,16 @@ public class ManejadorCliente
         }
         return listado;
     }
-    public boolean isLleno(char[][] board){
+
+    public boolean isLleno(char[][] board) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(board[i][j] != 'X' && board[i][j] != 'O' ){
+                if (board[i][j] != 'X' && board[i][j] != 'O') {
                     return false;
                 }
             }
         }
         return true;
-    }
-    public boolean compruebaTablero(char[][] board) {
-        // Check rows
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && (board[i][0] != '-' )) {
-                return true;
-            }
-        }
-
-        // Check columns
-        for (int i = 0; i < 3; i++) {
-            if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && (board[i][0] != '-')) {
-                return true;
-            }
-        }
-
-        // Check diagonals
-        if (board[0][0] == board[1][1] && board[1][1] == board[2][2]  && (board[0][0] != '-')) {
-            return true;
-        }
-        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && (board[0][2] != '-')) {
-            return true;
-        }
-
-        return false;
     }
 
     public boolean compruebaJugada(char[][] tablero, int[] jugada) {
@@ -240,14 +209,4 @@ public class ManejadorCliente
         return true;
     }
 
-    public PaquetePartida hacerJugada(PaquetePartida p) {
-        if (p.getTurno().equalsIgnoreCase(p.getJug1())) {
-            p.getTablero()[p.getMovimiento()[0]][p.getMovimiento()[1]] = 'X';
-            p.setTurno(p.getJug2());
-        } else {
-            p.getTablero()[p.getMovimiento()[0]][p.getMovimiento()[1]] = 'O';
-            p.setTurno(p.getJug1());
-        }
-        return p;
-    }
 }
