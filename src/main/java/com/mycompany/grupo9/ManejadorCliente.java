@@ -113,6 +113,8 @@ public class ManejadorCliente
                 p.setGanador(p.getTurno());
                 p.setFinalizada(true);
                 ControladorServidor.partidaFinalizada(p);
+                ManejadorCliente c = ControladorServidor.getManejador(p.getTurno());
+                c.enviaPartida(p);
             }
             return p;
         }
@@ -208,23 +210,23 @@ public class ManejadorCliente
     public boolean compruebaTablero(char[][] board) {
         // Check rows
         for (int i = 0; i < 3; i++) {
-            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && (board[i][0] == 'X'||board[i][0] == 'O')) {
+            if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && (board[i][0] != '-' )) {
                 return true;
             }
         }
 
         // Check columns
         for (int i = 0; i < 3; i++) {
-            if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && (board[i][0] == 'X'||board[i][0] == 'O')) {
+            if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && (board[i][0] != '-')) {
                 return true;
             }
         }
 
         // Check diagonals
-        if (board[0][0] == board[1][1] && board[1][1] == board[2][2]  && (board[0][0] == 'X'||board[0][0] == 'O')) {
+        if (board[0][0] == board[1][1] && board[1][1] == board[2][2]  && (board[0][0] != '-')) {
             return true;
         }
-        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && (board[0][2] == 'X'||board[0][2] == 'O')) {
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && (board[0][2] != '-')) {
             return true;
         }
 

@@ -6,10 +6,10 @@ package com.mycompany.cliente.modelo;
 
 /**
  * Clase que representa una partida entre dosjugadores
+ *
  * @author Javier Zatarín
  * @author Blanca Jorge
  */
-
 public class PaquetePartida {
 
     private char[][] tablero;
@@ -21,10 +21,16 @@ public class PaquetePartida {
     private String ganador;
 
     /**
-     * Constructor por defecto que inicializa el tablero y marca la partida como no finalizada.
+     * Constructor por defecto que inicializa el tablero y marca la partida como
+     * no finalizada.
      */
     public PaquetePartida() {
         this.tablero = new char[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tablero[i][j] = '-';
+            }
+        }
         this.finalizada = false;
         this.ganador = "";
     }
@@ -38,13 +44,19 @@ public class PaquetePartida {
     }
 
     /**
-     * Constructor que genera una nueva partida para dos usuarios.
-     * Inicializa el turno con el jugador 1.
+     * Constructor que genera una nueva partida para dos usuarios. Inicializa el
+     * turno con el jugador 1.
+     *
      * @param j1 jugador 1
      * @param j2 jugador 2
      */
     public PaquetePartida(String j1, String j2) {
         this.tablero = new char[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tablero[i][j] = '-';
+            }
+        }
         this.turno = j1;
         this.jug1 = j1;
         this.jug2 = j2;
@@ -54,6 +66,7 @@ public class PaquetePartida {
 
     /**
      * Obtiene el tablero de la partida.
+     *
      * @return tablero una matriz de caracteres que representa el tablero.
      */
     public char[][] getTablero() {
@@ -62,6 +75,7 @@ public class PaquetePartida {
 
     /**
      * Establece el tablero de la partida.
+     *
      * @param tablero una matriz de caracteres que representa el tablero.
      */
     public void setTablero(char[][] tablero) {
@@ -70,6 +84,7 @@ public class PaquetePartida {
 
     /**
      * Obtiene el jugador que tiene el turno.
+     *
      * @return turno una cadena con el nombre del jugador que tiene el turno.
      */
     public String getTurno() {
@@ -77,7 +92,8 @@ public class PaquetePartida {
     }
 
     /**
-     * Establece el jugador que tiene el turno. 
+     * Establece el jugador que tiene el turno.
+     *
      * @param turno una cadena con el nombre del jugador que tiene el turno.
      */
     public void setTurno(String turno) {
@@ -86,6 +102,7 @@ public class PaquetePartida {
 
     /**
      * Obtiene el movimiento actual.
+     *
      * @return movimiento El movimiento actual.
      */
     public int[] getMovimiento() {
@@ -94,6 +111,7 @@ public class PaquetePartida {
 
     /**
      * Establece el movimiento actual.
+     *
      * @param movimiento El movimiento actual.
      */
     public void setMovimiento(int[] movimiento) {
@@ -102,6 +120,7 @@ public class PaquetePartida {
 
     /**
      * Obtiene el nombre del jugador 1.
+     *
      * @return jug1 El nombre del jugador 1.
      */
     public String getJug1() {
@@ -110,6 +129,7 @@ public class PaquetePartida {
 
     /**
      * Establece el nombre del jugador 1
+     *
      * @param jug1 El nombre del jugador 1.
      */
     public void setJug1(String jug1) {
@@ -118,6 +138,7 @@ public class PaquetePartida {
 
     /**
      * Obtiene el nombre del jugador 2.
+     *
      * @return jug2 El nombre del jugador 2.
      */
     public String getJug2() {
@@ -126,6 +147,7 @@ public class PaquetePartida {
 
     /**
      * Establece el nombre del jugador 2.
+     *
      * @param jug2 El nombre del jugador 2.
      */
     public void setJug2(String jug2) {
@@ -134,6 +156,7 @@ public class PaquetePartida {
 
     /**
      * Verifica si la partida ha finalizado.
+     *
      * @return finalizada true si la partida ha finalizado, false si no.
      */
     public boolean isFinalizada() {
@@ -142,6 +165,7 @@ public class PaquetePartida {
 
     /**
      * Establece el estado de la partida.
+     *
      * @param finalizada true si la partida ha finalizado, false si no
      */
     public void setFinalizada(boolean finalizada) {
@@ -150,6 +174,7 @@ public class PaquetePartida {
 
     /**
      * Convierte la información de la partida en una cadena de texto.
+     *
      * @return mensaje El tablero, turno actual, jugador 1, jugador 2
      */
     @Override

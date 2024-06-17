@@ -51,6 +51,11 @@ public class ControladorTablero {
             System.out.println(linea);
             modelo = dec.decodificar(linea);
             vista.actualizar(modelo);
+            if (modelo.isFinalizada()) {
+                vista.actualizar(modelo);
+                vista.ganador(modelo.getGanador());
+                vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
+            }
             if (!modelo.getTurno().equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
                 linea = inred.readLine();
                 System.out.println("Act " + linea);
@@ -89,20 +94,22 @@ public class ControladorTablero {
                 o.println("P" + modelo.toString());
                 BufferedReader inred = new java.io.BufferedReader(new java.io.InputStreamReader(miSocket.getInputStream()));
                 String linea = inred.readLine();
-                System.out.println("jugada recibida" +linea);
+                System.out.println("jugada recibida" + linea);
                 PaquetePartida p = dec.decodificar(linea);
-                
-                if (modelo.getTurno().equalsIgnoreCase(p.getTurno())) {
-                    vista.mensajeErr("La jugada introducida no es posible");
+                if (p.isFinalizada()) {
+                    vista.actualizar(p);
+                    vista.ganador(p.getGanador());
+                    vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
                 } else {
-                    modelo = p;
-                    vista.actualizar(modelo);
-                    //linea= inred.readLine();
-                    procesaEventoActualizar();
-                    vista.actualizar(modelo);
-                    if (modelo.isFinalizada()) {
-                        vista.ganador(modelo.getGanador());
-                        vista.mensajeErr("PARTIDA FINALIZADA...cierre la ventana");
+                    if (modelo.getTurno().equalsIgnoreCase(p.getTurno())) {
+                        vista.mensajeErr("La jugada introducida no es posible");
+                    } else {
+                        modelo = p;
+                        vista.actualizar(modelo);
+                        //linea= inred.readLine();
+                        procesaEventoActualizar();
+                        vista.actualizar(modelo);
+
                     }
                 }
 
@@ -111,6 +118,7 @@ public class ControladorTablero {
             }
         }
     }
+
     /**
      * Método que procesa el cierre
      */

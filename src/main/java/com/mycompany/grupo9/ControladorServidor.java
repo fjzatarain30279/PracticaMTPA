@@ -116,7 +116,7 @@ public class ControladorServidor
                 partida.setFinalizada(p.isFinalizada());
                 ManejadorCliente c = getManejador(p.getTurno());
                 c.enviaPartida(p);
-                        System.out.println("controladorservidro " + p.toString());
+                        System.out.println("controladorservidro "+ c.getName() + p.toString());
 
                 break;
             }
