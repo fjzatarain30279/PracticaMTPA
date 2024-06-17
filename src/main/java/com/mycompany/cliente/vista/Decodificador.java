@@ -4,11 +4,11 @@
  */
 package com.mycompany.cliente.vista;
 
-
 /**
- *
- * @author javier
+ * interfaz que contiene el objeto decodificar
+ * @author Javier Zataraín
  */
+
 public interface Decodificador {
     public Object decodificar(String linea);  
 }
