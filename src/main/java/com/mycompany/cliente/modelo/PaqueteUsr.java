@@ -39,7 +39,7 @@ public class PaqueteUsr extends AbstractListModel{
     }
     /**
      * Método que establece al usuario
-     * @param seleccionador 
+     * @param seleccionador Usuario que selecciona
      */
     public void setSeleccionador(String seleccionador) {
         this.seleccionador = seleccionador;
