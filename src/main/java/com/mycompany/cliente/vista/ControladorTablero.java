@@ -74,7 +74,7 @@ public class ControladorTablero {
     /**
      * Método que procesa la jugada
      *
-     * @param j
+     * @param j Movimiento
      */
     public void procesaEventoJugada(int[] j) {
         if (!modelo.getTurno().equalsIgnoreCase(Cliente.getModeloLogin().getUsuario())) {
@@ -111,7 +111,9 @@ public class ControladorTablero {
             }
         }
     }
-
+    /**
+     * Método que procesa el cierre
+     */
     public void procesaEventoCerrar() {
         java.io.PrintStream o = null;
         try {
