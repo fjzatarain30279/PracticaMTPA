@@ -13,7 +13,7 @@ import java.io.PrintStream;
 /**
  * Clase que implementa el manejador del cliente
  *
- * @author Javier Ztaraín
+ * @author Javier Zataraín
  * @authro Blanca Jorge
  */
 public class ManejadorCliente
