@@ -10,7 +10,8 @@ import com.mycompany.cliente.modelo.PaqueteLogin;
 /**
  * Clase que controla el menú y se encarga de procesar el inicio de sesión y la
  * crecaión de usuarios
- * @author javier
+ * @author Javier Zataraín
+ * @author Blanca Jorge
  */
 public class ControladorMenu {
 
