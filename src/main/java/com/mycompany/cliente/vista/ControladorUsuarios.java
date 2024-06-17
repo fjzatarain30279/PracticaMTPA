@@ -48,7 +48,7 @@ public class ControladorUsuarios {
     }
     /**
      * Método que procesa la selección de un usuario por parte de otro
-     * @param indice 
+     * @param indice posición del usuario en la lista
      */
     public void procesaEventoSeleccion(int indice) {
         String usr = modelo.getElementAt(indice);
